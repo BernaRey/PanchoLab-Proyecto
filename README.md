@@ -1,0 +1,2 @@
+# Repositorio de test para git
+Este es un repositorio que va a almacenar la informacion de la prueba y prepararme para aprender los conocimientos de git a la hora de crear un proyecto final como lo es el de PanchoLab
