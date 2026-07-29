@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>PanchoLab</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <!-- Encabezado principal de la página -->
+    <header>
+        <div class="Logo-inicio">
+            <h1>PanchoLab</h1>
+              <img src="./assets/.img/pancholab.png" alt="Logo de PanchoLab">
+        </div>
+        
+        <!-- Menú de navegación principal -->
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#menu-panchos">Nuestra Carta</a></li>
+                <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                <li><a href="#preguntas">Preguntas Frecuentes</a></li>
+            </ul>
+        </nav>
+
+        <!-- Barra de usuario y carrito -->
+        <div class="header-usuario">
+            <a href="#perfil" class="btn-usuario">Mi Perfil</a>
+            <a href="#carrito" class="btn-carrito">Carrito (<span id="contador-carrito">0</span>)</a>
+        </div>
+    </header>
+
+    <!-- Contenido principal del sitio -->
+    <main>
+
+        <!-- Sección de Inicio / Bienvenida -->
+        <section id="inicio">
+            <h2>¡Bienvenido al Laboratorio del Pancho!</h2>
+            <p>Armá tu combinación perfecta o elegí nuestras recetas exclusivas.</p>
+            
+            <!-- Contenedor de opciones principales de compra -->
+            <div class="opciones-compra">
+                <div class="opcion-tarjeta">
+                    <h3>Crea tu propio Pancho</h3>
+                    <p>Elegí el tipo de salchicha, pan y los toppings que más te gusten.</p>
+                    <a href="#armar-pancho" class="btn-accion">Empezar a Crear</a>
+                </div>
+                
+                <div class="opcion-tarjeta">
+                    <h3>Elegí de los ya existentes</h3>
+                    <p>Probá las combinaciones creadas por nuestros expertos.</p>
+                    <a href="#menu-panchos" class="btn-accion">Ver la Carta</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Sobre Nosotros -->
+        <section id="sobre-nosotros">
+            <h2>Sobre Nosotros</h2>
+            <p>En PanchoLab revolucionamos la forma de comer panchos. Experimentamos con los mejores ingredientes para darte una experiencia gastronómica única y a tu medida.</p>
+        </section>
+
+        <!-- Sección de Preguntas Frecuentes -->
+        <section id="preguntas">
+            <h2>Preguntas Frecuentes</h2>
+            <div class="pregunta-item">
+                <h4>¿Tienen diferentes opciones de pago?</h4>
+                <p>Sí, contamos con diversas formas de pago para tu conveniencia.</p>
+            </div>
+            <div class="pregunta-item">
+                <h4>¿Cuánto tarda el envío?</h4>
+                <p>El tiempo estimado de entrega es de 30 a 45 minutos.</p>
+            </div>
+        </section>
+
+        <!-- Sección del Carrito de Compras y Pago -->
+        <section id="carrito">
+            <h2>Tu Carrito</h2>
+            <div class="lista-carrito">
+                <!-- Aquí se listarán los panchos agregados mediante JavaScript -->
+                <p>Tu carrito está vacío. ¡Empieza a experimentar!</p>
+            </div>
+            
+            <!-- Resumen y Finalización de Compra -->
+            <div class="finalizar-compra">
+                <p><strong>Total:</strong> $<span id="total-pago">0.00</span></p>
+                <a href="#checkout" class="btn-pagar">Finalizar Pago</a>
+            </div>
+        </section>
+
+        <!-- Sección de Seguimiento del Pedido -->
+        <section id="seguimiento-pedido">
+            <h2>Sigue tu Pedido</h2>
+            <div class="estado-pedido">
+                <p>Estado actual: <strong>Esperando tu orden...</strong></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="footer-info">
+            <p>&copy; 2026 PanchoLab. Todos los derechos reservados.</p>
+        </div>
+        
+        <!-- Redes Sociales -->
+        <div class="footer-redes">
+            <h4>Seguinos en nuestras redes</h4>
+            <a href="https://instagram.com" target="_blank">Instagram</a> | 
+            <a href="https://facebook.com" target="_blank">Facebook</a> | 
+            <a href="https://tiktok.com" target="_blank">TikTok</a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
