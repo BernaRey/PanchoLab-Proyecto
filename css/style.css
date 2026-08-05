@@ -11,7 +11,7 @@
     box-sizing: border-box;
 }
 
-.header-logo img {
+.Logo-inicio img {
     width: 200px;
     padding: 5px;
     border: 2px solid var(--color-secondary);
