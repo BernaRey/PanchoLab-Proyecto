@@ -1,0 +1,39 @@
+@keyframes pulso-neon {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.8; filter: brightness(1.2); }
+}
+@keyframes brillo {
+  0%, 100% { box-shadow: var(--brillo-cian); }
+  50% { box-shadow: 0 0 20px var(--neon-cian), 0 0 40px var(--neon-cian), 0 0 60px var(--neon-cian); }
+}
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animacion-pulso { animation: pulso-neon 2s ease-in-out infinite; }
+.animacion-brillo { animation: brillo 2s ease-in-out infinite; }
+.animacion-aparecer { animation: aparecer 0.6s ease-out forwards; }
+.animacion-flotar { animation: flotar 3s ease-in-out infinite; }
+
+.efecto-scanline {
+  position: relative;
+  overflow: hidden;
+}
+.efecto-scanline::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-cian), transparent);
+  animation: scanline 3s linear infinite;
+  opacity: 0.5;
+}

@@ -1,0 +1,49 @@
+:root {
+  /* Colores neón vibrantes para atraer compradores */
+  --neon-rosa: #ff0080;
+  --neon-cian: #00f3ff;
+  --neon-violeta: #bc13fe;
+  --neon-amarillo: #ffe500;
+  --neon-naranja: #ff6b00;
+  --neon-verde: #00ff88;
+
+  /* Fondos oscuros con profundidad */
+  --fondo-principal: #05050a;
+  --fondo-seccion: #0a0a12;
+  --fondo-panel: #121220;
+  --fondo-tarjeta: #16162a;
+
+  /* Texto */
+  --texto-blanco: #ffffff;
+  --texto-neon: #e0e0ff;
+  --texto-suave: #8888aa;
+  --texto-oscuro: #05050a;
+
+  /* Fuentes */
+  --fuente-titulo: 'Orbitron', sans-serif;
+  --fuente-cuerpo: 'Rajdhani', sans-serif;
+
+  /* Espaciado */
+  --espaciado-xs: 0.5rem;
+  --espaciado-s: 1rem;
+  --espaciado-m: 1.5rem;
+  --espaciado-l: 2rem;
+  --espaciado-xl: 3rem;
+  --espaciado-xxl: 4rem;
+
+  /* Bordes más orgánicos */
+  --radio-s: 8px;
+  --radio-m: 16px;
+  --radio-l: 24px;
+  --radio-xl: 32px;
+
+  /* Sombras y brillos */
+  --sombra-neon-rosa: 0 0 15px rgba(255, 0, 128, 0.4), 0 0 30px rgba(255, 0, 128, 0.2);
+  --sombra-neon-cian: 0 0 15px rgba(0, 243, 255, 0.4), 0 0 30px rgba(0, 243, 255, 0.2);
+  --sombra-neon-violeta: 0 0 15px rgba(188, 19, 254, 0.4), 0 0 30px rgba(188, 19, 254, 0.2);
+
+  /* Transiciones */
+  --transicion-rapida: 0.2s ease;
+  --transicion-media: 0.4s ease;
+  --transicion-lenta: 0.6s ease;
+}

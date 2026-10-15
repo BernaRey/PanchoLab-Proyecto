@@ -1,0 +1,309 @@
+/* ===== TARJETA CARACTERÍSTICA ===== */
+.tarjeta-caracteristica {
+  padding: var(--espaciado-m);
+  border-radius: var(--radio-l);
+  background: var(--fondo-panel);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: var(--transicion-rapida);
+  text-align: center;
+}
+
+.tarjeta-caracteristica:hover {
+  border-color: var(--neon-cian);
+  box-shadow: var(--sombra-neon-cian);
+  transform: translateY(-5px);
+}
+
+.tarjeta-caracteristica h3 {
+  font-size: 1.2rem;
+  margin-bottom: var(--espaciado-s);
+  color: var(--texto-blanco);
+}
+
+.tarjeta-caracteristica p {
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ===== PANEL DE ADMINISTRACIÓN ===== */
+.panelAdmin {
+  padding: var(--espaciado-xl) var(--espaciado-m);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espaciado-xl);
+  flex-wrap: wrap;
+  gap: var(--espaciado-m);
+}
+
+.panelHeader h2 {
+  font-size: 2rem;
+  margin: 0;
+  color: var(--texto-blanco);
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--neon-rosa), var(--neon-cian));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.adminActions {
+  display: flex;
+  gap: var(--espaciado-m);
+  align-items: center;
+}
+
+.botonNuevo {
+  background: linear-gradient(135deg, var(--neon-rosa), var(--neon-violeta));
+  color: var(--texto-oscuro);
+  border: none;
+  padding: 0.7rem 1.6rem;
+  border-radius: var(--radio-m);
+  font-weight: 900;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: var(--sombra-neon-rosa);
+  transition: var(--transicion-rapida);
+}
+
+.botonNuevo:hover { box-shadow: 0 0 30px var(--neon-rosa); transform: scale(1.05); }
+
+.botonVolver {
+  background: transparent;
+  border: 2px solid var(--neon-cian);
+  color: var(--neon-cian);
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radio-m);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: var(--transicion-rapida);
+}
+
+.botonVolver:hover { color: var(--texto-oscuro); background: var(--neon-cian); box-shadow: var(--sombra-neon-cian); }
+
+.tablaAdmin {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--fondo-panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radio-xl);
+  overflow: hidden;
+  margin-bottom: var(--espaciado-xl);
+}
+
+.tablaAdmin th,
+.tablaAdmin td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--texto-neon);
+  font-size: 0.9rem;
+}
+
+.tablaAdmin th {
+  background: var(--fondo-seccion);
+  color: var(--neon-cian);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 900;
+}
+
+.tablaAdmin tr:last-child td { border-bottom: none; }
+.tablaAdmin tr:hover { background: rgba(255, 255, 255, 0.03); }
+
+.precioAdmin { font-weight: 900; color: var(--neon-amarillo); }
+.stockAdmin { font-weight: 800; color: var(--texto-suave); }
+.activoSi { color: var(--neon-verde); font-weight: 900; }
+.activoNo { color: var(--neon-rosa); font-weight: 900; }
+
+.accionesFila {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.botonEditar,
+.botonEliminar {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radio-s);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: var(--transicion-rapida);
+}
+
+.botonEditar { background: var(--neon-cian); color: var(--texto-oscuro); }
+.botonEditar:hover { opacity: 0.9; box-shadow: var(--sombra-neon-cian); }
+.botonEliminar { background: transparent; border: 1px solid var(--neon-rosa); color: var(--neon-rosa); }
+.botonEliminar:hover { background: var(--neon-rosa); color: var(--texto-oscuro); }
+
+.mensaje {
+  padding: 1rem;
+  border-radius: var(--radio-m);
+  margin-bottom: var(--espaciado-m);
+  font-size: 0.95rem;
+  border: 1px solid;
+}
+
+.mensajeExito { background: rgba(0, 255, 136, 0.15); border-color: var(--neon-verde); color: var(--neon-verde); }
+.mensajeError { background: rgba(255, 0, 128, 0.15); border-color: var(--neon-rosa); color: var(--neon-rosa); }
+
+.formularioAdmin {
+  background: var(--fondo-panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-xl);
+  margin-bottom: var(--espaciado-xl);
+}
+
+.formularioAdmin h3 {
+  margin-top: 0;
+  margin-bottom: var(--espaciado-m);
+  font-size: 1.5rem;
+  color: var(--texto-blanco);
+}
+
+.campo {
+  margin-bottom: var(--espaciado-m);
+}
+
+.campo label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--texto-suave);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  background: var(--fondo-principal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radio-m);
+  color: var(--texto-blanco);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: var(--transicion-rapida);
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--neon-cian);
+  box-shadow: 0 0 0 2px rgba(0, 243, 255, 0.2);
+}
+
+.campo textarea { min-height: 100px; resize: vertical; }
+
+.filaCampos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--espaciado-m);
+}
+
+.accionesForm {
+  display: flex;
+  gap: var(--espaciado-m);
+  margin-top: var(--espaciado-m);
+}
+
+.botonGuardar {
+  background: linear-gradient(135deg, var(--neon-rosa), var(--neon-violeta));
+  color: var(--texto-oscuro);
+  border: none;
+  padding: 0.75rem 1.8rem;
+  border-radius: var(--radio-m);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: var(--transicion-rapida);
+  box-shadow: var(--sombra-neon-rosa);
+}
+
+.botonGuardar:hover { box-shadow: 0 0 30px var(--neon-rosa); opacity: 0.95; }
+
+.botonCancelar {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: var(--texto-suave);
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--radio-m);
+  cursor: pointer;
+  transition: var(--transicion-rapida);
+}
+
+.botonCancelar:hover { color: var(--neon-cian); border-color: var(--neon-cian); }
+
+/* ===== LOGIN ===== */
+.loginPanel {
+  max-width: 420px;
+  margin: var(--espaciado-xl) auto;
+  padding: 0 var(--espaciado-m);
+}
+
+.loginTarjeta {
+  background: var(--fondo-panel);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-xl);
+}
+
+.loginTarjeta h2 {
+  margin-top: 0;
+  margin-bottom: var(--espaciado-xl);
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--texto-blanco);
+  letter-spacing: 0.05em;
+}
+
+.cambioRol {
+  margin-top: var(--espaciado-m);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.cambioRol a { color: var(--neon-cian); text-decoration: underline; cursor: pointer; }
+.cambioRol a:hover { color: var(--neon-rosa); text-shadow: var(--sombra-neon-rosa); }
+
+/* ===== ENLACE SECRETO ADMIN ===== */
+.acceso-secreto {
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  opacity: 0.25;
+  transition: var(--transicion-media);
+  text-decoration: none;
+  margin-left: var(--espaciado-m);
+}
+
+.acceso-secreto:hover {
+  opacity: 1;
+  color: var(--neon-magenta);
+  text-shadow: 0 0 15px var(--neon-rosa);
+  text-decoration: underline;
+}

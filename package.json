@@ -1,0 +1,19 @@
+{
+  "name": "pancholab",
+  "version": "1.0.0",
+  "description": "Pancholab - Laboratorio gastronómico de panchos del mundo. Aplicación full stack integrada con Node.js, Express, React, MongoDB y Mongoose.",
+  "main": "src/server/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server/server.js",
+    "dev": "node --watch src/server/server.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest 2>/dev/null || echo 'No hay pruebas automatizadas configuradas'"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.0.0"
+  }
+}
