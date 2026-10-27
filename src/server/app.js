@@ -15,6 +15,8 @@ import { manejarErrores, rutaNoEncontrada } from './middleware/errorHandler.js';
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(
   session({
@@ -30,17 +32,27 @@ app.use(
   })
 );
 
-// Conectar a MongoDB (no bloqueante: el frontend sigue sirviéndose aunque no haya BD)
-conectarBaseDeDatos();
-
 // Estado de la base de datos disponible en las rutas de la API
-app.use('/api', (req, res, next) => {
-  const { conectado, error } = estadoBaseDeDatos();
-  req.dbConectado = conectado;
-  req.dbError = error;
-  next();
-});
+app.use('/api', async (req, res, next) => {
+  try {
+    await conectarBaseDeDatos();
 
+    const { conectado, error } = estadoBaseDeDatos();
+    req.dbConectado = conectado;
+    req.dbError = error;
+
+    if (!conectado) {
+      return res.status(503).json({
+        exito: false,
+        mensaje: 'La base de datos no está disponible. Intentá nuevamente en unos segundos.',
+      });
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 // Rutas de la API (prefijo /api)
 app.use('/api/auth', rutasAuth);
 app.use('/api/products', rutasProductos);
