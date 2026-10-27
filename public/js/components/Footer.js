@@ -10,7 +10,7 @@ export default function Footer() {
           h('span', { className: 'logoIcono' }, '🧪'),
           h('span', { className: 'logoTexto' }, 'Pancholab')
         ),
-        h('p', null, 'El laboratorio donde los panchos se convierten en experiencias gastronómicas únicas, fusionando sabores del mundo con técnicas de laboratorio y conciencia ecológica.'),
+        h('p', null, 'El laboratorio donde los panchos se convierten en experiencias gastronómicas únicas.'),
         h('div', { className: 'redes' },
           h('a', { href: 'https://instagram.com', target: '_blank', rel: 'noopener noreferrer', className: 'redSocial', 'aria-label': 'Instagram' }, '📷'),
           h('a', { href: 'https://facebook.com', target: '_blank', rel: 'noopener noreferrer', className: 'redSocial', 'aria-label': 'Facebook' }, '📘'),
@@ -25,18 +25,10 @@ export default function Footer() {
         )
       ),
       h('div', { className: 'columna' },
-        h('h4', null, 'Categorías'),
-        h('ul', { className: 'lista' },
-          h('li', null, h('a', { href: '#productos' }, 'Panchos')),
-          h('li', null, h('a', { href: '#productos' }, 'Bebidas'))
-        )
-      ),
-      h('div', { className: 'columna' },
         h('h4', null, 'Contacto'),
         h('ul', { className: 'lista' },
           h('li', null, '📍 Colonia, Uruguay'),
-          h('li', null, '📧 hola@pancholab.com'),
-          h('li', null, '📱 111-11-11-11')
+          h('li', null, '📧 hola@pancholab.com')
         )
       )
     ),

@@ -13,8 +13,18 @@ const userSchema = new mongoose.Schema(
     },
     passwordHash: { type: String, required: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    tiendaAbierta: { type: Boolean, default: true },
   },
   { timestamps: true }
+);
+
+userSchema.index(
+  { role: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { role: 'admin' },
+    name: 'unico_administrador',
+  }
 );
 
 userSchema.methods.setPassword = function (password) {
@@ -24,9 +34,16 @@ userSchema.methods.setPassword = function (password) {
 };
 
 userSchema.methods.validarPassword = function (password) {
-  const [salt, hash] = this.passwordHash.split(':');
+  const [salt, hash] = String(this.passwordHash).split(':');
+  if (!/^[a-f0-9]{32}$/i.test(salt) || !/^[a-f0-9]{128}$/i.test(hash)) {
+    return false;
+  }
+
   const hashVerificado = crypto.scryptSync(password, salt, 64).toString('hex');
-  return hash === hashVerificado;
+  return crypto.timingSafeEqual(
+    Buffer.from(hash, 'hex'),
+    Buffer.from(hashVerificado, 'hex')
+  );
 };
 
 userSchema.methods.toJSON = function () {

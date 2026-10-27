@@ -6,14 +6,22 @@
   "type": "module",
   "scripts": {
     "start": "node src/server/server.js",
-    "dev": "node --watch src/server/server.js",
+    "dev": "vite",
+    "dev:server": "node --watch src/server/server.js",
+    "build": "vite build",
+    "preview": "vite preview",
+    "admin:crear": "node scripts/setup-admin.js",
     "test": "node --experimental-vm-modules node_modules/.bin/jest 2>/dev/null || echo 'No hay pruebas automatizadas configuradas'"
   },
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
-    "mongoose": "^8.0.0"
+    "mongoose": "^8.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
   }
 }

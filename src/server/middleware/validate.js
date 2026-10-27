@@ -8,7 +8,17 @@ export function validarId(req, res, next) {
 }
 
 export function validarProducto(req, res, next) {
-  const { name, description, price, stock, category, image, isActive } = req.body;
+  const {
+    name,
+    description,
+    price,
+    stock,
+    category,
+    image,
+    country,
+    ingredients,
+    isActive,
+  } = req.body;
   const errores = [];
 
   if (!name || String(name).trim().length === 0) errores.push('El nombre es obligatorio');
@@ -18,6 +28,21 @@ export function validarProducto(req, res, next) {
   }
   if (stock !== undefined && stock !== null && (isNaN(Number(stock)) || Number(stock) < 0)) {
     errores.push('El stock debe ser un número mayor o igual a 0');
+  }
+  if (country !== undefined && country !== null && typeof country !== 'string') {
+    errores.push('El país debe ser texto');
+  }
+  if (ingredients !== undefined && !Array.isArray(ingredients)) {
+    errores.push('Los ingredientes deben enviarse como una lista');
+  }
+  if (Array.isArray(ingredients) && ingredients.some((item) => typeof item !== 'string')) {
+    errores.push('Cada ingrediente debe ser texto');
+  }
+  if (
+    isActive !== undefined
+    && ![true, false, 'true', 'false'].includes(isActive)
+  ) {
+    errores.push('El estado del producto no es válido');
   }
 
   if (errores.length > 0) {
@@ -31,7 +56,11 @@ export function validarProducto(req, res, next) {
     stock: stock !== undefined && stock !== null ? Number(stock) : 0,
     category: category ? String(category).trim() : 'panchos',
     image: image ? String(image).trim() : '',
-    isActive: isActive === true || isActive === 'true',
+    country: country ? country.trim() : '',
+    ingredients: Array.isArray(ingredients)
+      ? ingredients.map((item) => item.trim()).filter(Boolean)
+      : [],
+    isActive: isActive === undefined ? true : isActive === true || isActive === 'true',
   };
   next();
 }

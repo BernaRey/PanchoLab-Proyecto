@@ -49,6 +49,7 @@
   letter-spacing: 0.05em;
   background: linear-gradient(135deg, var(--neon-rosa), var(--neon-cian));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -292,9 +293,8 @@
 /* ===== ENLACE SECRETO ADMIN ===== */
 .acceso-secreto {
   color: var(--texto-suave);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
   opacity: 0.25;
   transition: var(--transicion-media);
   text-decoration: none;

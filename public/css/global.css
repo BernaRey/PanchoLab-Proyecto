@@ -18,14 +18,157 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ===== FONDO ANIMADO DINÁMICO ===== */
+.fondo-dinamico {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #05050a 100%);
+}
+
+.malla-neon {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(255, 0, 128, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.08) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: malla-mover 20s linear infinite;
+}
+
+.bolas-fluo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bola {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.45;
+  animation: flotar-bola 12s ease-in-out infinite alternate;
+}
+
+.bola-1 {
+  top: 10%;
+  left: 10%;
+  width: 500px;
+  height: 500px;
+  background: var(--neon-rosa);
+  animation-delay: 0s;
+}
+
+.bola-2 {
+  bottom: 15%;
+  right: 10%;
+  width: 600px;
+  height: 600px;
+  background: var(--neon-cian);
+  animation-delay: -4s;
+}
+
+.bola-3 {
+  top: 40%;
+  left: 55%;
+  width: 450px;
+  height: 450px;
+  background: var(--neon-violeta);
+  animation-delay: -8s;
+}
+
+@keyframes malla-mover {
+  0% { background-position: 0 0; }
+  100% { background-position: 80px 80px; }
+}
+
+@keyframes flotar-bola {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  100% { transform: translate(80px, -60px) scale(1.2); opacity: 0.55; }
+}
+
+/* ===== FONDO: IMÁGENES DE PANCHOS DEL MUNDO ===== */
+.fondo-imagenes {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fondo-imagenes .img-fondo {
+  position: absolute;
+  object-fit: cover;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  filter: grayscale(0.6) contrast(1.1) brightness(0.85);
+  user-select: none;
+  transition: transform 25s ease, opacity 8s ease;
+}
+
+.fondo-imagenes .img-1 {
+  top: -5%;
+  left: -5%;
+  width: 500px;
+  height: 500px;
+  transform: rotate(-5deg);
+  animation: flotar-imagen 28s ease-in-out infinite alternate;
+}
+
+.fondo-imagenes .img-2 {
+  top: 8%;
+  right: -8%;
+  width: 550px;
+  height: 500px;
+  animation: flotar-imagen 32s ease-in-out infinite alternate-reverse;
+}
+
+.fondo-imagenes .img-3 {
+  bottom: -5%;
+  left: 12%;
+  width: 480px;
+  height: 480px;
+  transform: rotate(5deg);
+  animation: flotar-imagen 30s ease-in-out infinite alternate;
+}
+
+.fondo-imagenes .img-4 {
+  bottom: 8%;
+  right: 8%;
+  width: 520px;
+  height: 520px;
+  transform: rotate(-8deg);
+  animation: flotar-imagen 34s ease-in-out infinite alternate-reverse;
+}
+
+.fondo-imagenes .img-5 {
+  top: 30%;
+  left: 50%;
+  width: 700px;
+  height: 550px;
+  transform: translateX(-50%) rotate(2deg);
+  opacity: 0.06;
+  filter: grayscale(0.7) contrast(1.1);
+  animation: flotar-imagen 36s ease-in-out infinite alternate;
+}
+
+@keyframes flotar-imagen {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(20px, -15px) scale(1.06); }
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--fuente-titulo);
-  font-weight: 900;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  line-height: 1.1;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
 }
 
 a {
@@ -43,13 +186,12 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--espaciado-xs);
-  padding: 0.9rem 1.8rem;
+  gap: var(--espaciado-s);
+  padding: 1.2rem 3.5rem;
   font-family: var(--fuente-titulo);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   border: none;
   border-radius: var(--radio-m);
   background: transparent;
@@ -109,7 +251,7 @@ a:hover {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--espaciado-m);
+  padding: 0 var(--espaciado-xl);
 }
 
 .fondo-rejilla {
@@ -135,4 +277,27 @@ a:hover {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(var(--neon-violeta), var(--neon-cian));
+}
+
+/* ===== LÍNEAS RGB EN MOVIMIENTO (arriba y abajo) ===== */
+.linea-rgb-superior,
+.linea-rgb-inferior {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 5px;
+  z-index: 300;
+  background: linear-gradient(90deg, var(--neon-rosa), var(--neon-cian), var(--neon-violeta), var(--neon-amarillo), var(--neon-rosa));
+  background-size: 300% 300%;
+  animation: rgb-mover 7s ease infinite;
+  pointer-events: none;
+}
+
+.linea-rgb-superior { top: 0; }
+.linea-rgb-inferior { bottom: 0; }
+
+@keyframes rgb-mover {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

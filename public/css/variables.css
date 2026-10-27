@@ -7,6 +7,11 @@
   --neon-naranja: #ff6b00;
   --neon-verde: #00ff88;
 
+  /* Colores dinámicos para fondo animado */
+  --color-dinamico-1: #ff0080;
+  --color-dinamico-2: #00f3ff;
+  --color-dinamico-3: #bc13fe;
+
   /* Fondos oscuros con profundidad */
   --fondo-principal: #05050a;
   --fondo-seccion: #0a0a12;
@@ -20,16 +25,16 @@
   --texto-oscuro: #05050a;
 
   /* Fuentes */
-  --fuente-titulo: 'Orbitron', sans-serif;
-  --fuente-cuerpo: 'Rajdhani', sans-serif;
+  --fuente-titulo: 'Bebas Neue', sans-serif;
+  --fuente-cuerpo: 'Mulish', sans-serif;
 
-  /* Espaciado */
-  --espaciado-xs: 0.5rem;
-  --espaciado-s: 1rem;
-  --espaciado-m: 1.5rem;
-  --espaciado-l: 2rem;
-  --espaciado-xl: 3rem;
-  --espaciado-xxl: 4rem;
+  /* Espaciado más holgado */
+  --espaciado-xs: 0.75rem;
+  --espaciado-s: 1.5rem;
+  --espaciado-m: 2rem;
+  --espaciado-l: 3rem;
+  --espaciado-xl: 4.5rem;
+  --espaciado-xxl: 6rem;
 
   /* Bordes más orgánicos */
   --radio-s: 8px;

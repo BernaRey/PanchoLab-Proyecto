@@ -4,7 +4,7 @@ Aplicación full stack integrada (frontend + backend en un solo proyecto) con No
 
 ## Tecnologías
 
-- **Backend**: Node.js, Express, Mongoose, express-session, CORS, dotenv
+- **Backend**: Node.js, Express, Mongoose, express-session, dotenv
 - **Frontend**: React 18 (vía CDN, sin paso de compilación), HTML, CSS estándar
 - **Base de datos**: MongoDB con Mongoose
 - **Sin Vite, sin Webpack, sin TypeScript, sin Redux, sin Docker**
@@ -73,9 +73,11 @@ cp .env.example .env
 Luego edita `.env`. Al menos define:
 
 - `MONGO_URI`: cadena de conexión a MongoDB (obligatoria para los datos).
-- `SESSION_SECRETO`: clave secreta para firmar las sesiones (cambiar en producción).
+- `SESSION_SECRETO`: clave aleatoria y privada de al menos 32 caracteres para firmar las sesiones; obligatoria en producción.
 - `PUERTO`: puerto del servidor (por defecto 3000).
 - `NODE_ENV`: entorno (`desarrollo` o `produccion`).
+- `ADMIN_USERNAME` y `ADMIN_PASSWORD`: se usan solo al crear el primer administrador; la contraseña debe tener al menos 12 caracteres.
+- `WHATSAPP_VENDEDOR`: número internacional del vendedor, con código de país y solo dígitos, por ejemplo `5491123456789`.
 
 `.env` está excluido de Git (`.gitignore`).
 
@@ -84,13 +86,11 @@ Luego edita `.env`. Al menos define:
 El rol `admin` **no puede asignarse desde el navegador**. El primer administrador se crea mediante un script controlado:
 
 ```bash
-# Define la contraseña del admin y ejecuta
-ADMIN_PASSWORD=tu_contraseña_segura npm run scripts/setup-admin.js
-# o, en PowerShell:
-$env:ADMIN_PASSWORD="tu_contraseña_segura"; node scripts/setup-admin.js
+# Completa ADMIN_USERNAME y ADMIN_PASSWORD en .env y ejecuta:
+npm run admin:crear
 ```
 
-Luego podrás iniciar sesión con ese usuario y acceder al panel de administración.
+El comando crea la cuenta solo si MongoDB está disponible y todavía no existe un administrador. No imprime ni guarda la contraseña en texto plano. Luego podrás iniciar sesión con ese usuario y acceder al panel de administración.
 
 ### 4. Iniciar la aplicación
 
@@ -113,10 +113,10 @@ La aplicación estará disponible en `http://localhost:3000` (o el puerto que de
 | Método | Ruta | Acceso | Descripción |
 |--------|------|--------|-------------|
 | GET | `/api/estado` | Público | Estado de la API y de la base de datos |
-| POST | `/api/auth/registro` | Público | Registrar usuario (rol `user` por defecto) |
 | POST | `/api/auth/login` | Público | Iniciar sesión (cookie `httpOnly`) |
 | POST | `/api/auth/logout` | Sesión | Cerrar sesión |
 | GET | `/api/auth/me` | Sesión | Usuario autenticado actual |
+| POST | `/api/checkout` | Público | Validar stock, confirmar pedido y devolver enlace de WhatsApp |
 | GET | `/api/products` | Público | Listar productos (`?category=...`) |
 | GET | `/api/products/:id` | Público | Detalle de un producto |
 | POST | `/api/products` | Admin | Crear producto |
@@ -127,8 +127,10 @@ Las operaciones de escritura de productos están protegidas en el **backend**. O
 
 ## Roles
 
-- **user**: puede ver el catálogo y detalles de productos. No puede crear, editar ni eliminar productos.
-- **admin**: puede crear, editar y eliminar productos desde el panel de administración. Solo se crea mediante `scripts/setup-admin.js`.
+- No hay registro público: los clientes acceden directamente al catálogo.
+- **admin**: puede crear, editar y eliminar productos desde el panel de administración. Se provisiona una única vez mediante `npm run admin:crear`.
+
+El checkout descuenta el stock mediante actualizaciones condicionales por producto. Si un producto no tiene stock suficiente, revierte los descuentos anteriores; si la reversión falla, la API devuelve una referencia y registra los productos afectados sin guardar datos personales. Usá esa referencia en los logs y corregí el stock desde el panel admin. No se reintenta automáticamente una compensación ambigua porque un `$inc` podría haberse aplicado aunque se haya perdido la respuesta. Esta estrategia es compatible con MongoDB standalone, pero no tiene la atomicidad de una transacción ni recupera automáticamente una caída abrupta del proceso.
 
 ## Base de datos (MongoDB)
 

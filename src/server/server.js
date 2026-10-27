@@ -1,5 +1,10 @@
 import app from './app.js';
-import { env } from './config/env.js';
+import { env, validarConfiguracion } from './config/env.js';
+
+const erroresConfiguracion = validarConfiguracion();
+if (erroresConfiguracion.length > 0) {
+  throw new Error(`Configuración inválida: ${erroresConfiguracion.join('; ')}`);
+}
 
 app.listen(env.puerto, () => {
   console.log(`🧪 Pancholab corriendo en http://localhost:${env.puerto}`);

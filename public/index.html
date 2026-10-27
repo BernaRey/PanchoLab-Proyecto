@@ -7,7 +7,7 @@
   <title>Pancholab - El laboratorio del pancho</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <link rel="stylesheet" href="/css/variables.css" />
@@ -17,7 +17,39 @@
   <link rel="stylesheet" href="/css/admin.css" />
 </head>
 <body>
+  <div class="fondo-dinamico">
+    <div class="malla-neon"></div>
+    <div class="bolas-fluo">
+      <div class="bola bola-1"></div>
+      <div class="bola bola-2"></div>
+      <div class="bola bola-3"></div>
+    </div>
+    <div class="fondo-imagenes">
+      <img src="https://images.unsplash.com/photo-1559338352-bf4990826b6c?q=80&w=1200&auto=format&fit=crop" class="img-fondo img-1" alt="Hotdog estilo neoyorquino" draggable="false">
+      <img src="https://images.unsplash.com/photo-1532926643949-3e674f7b96c1?q=80&w=1200&auto=format&fit=crop" class="img-fondo img-2" alt="Perrito caliente clásico" draggable="false">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1200&auto=format&fit=crop" class="img-fondo img-3" alt="Hotdog gourmet" draggable="false">
+      <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=1200&auto=format&fit=crop" class="img-fondo img-4" alt="Pancho con salchicha" draggable="false">
+      <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" class="img-fondo img-5" alt="Hotdog artesanal" draggable="false">
+    </div>
+  </div>
   <div id="raiz"></div>
+  <div class="linea-rgb-superior"></div>
+  <div class="linea-rgb-inferior"></div>
+  <div class="borde-lateral-izq"></div>
+  <div class="borde-lateral-der"></div>
+  <script>
+    // Revelado al hacer scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
   <script type="module" src="/js/main.js"></script>
 </body>
 </html>

@@ -5,7 +5,6 @@ import Footer from '../components/Footer.js';
 export default function Login({ usuario, navegar, onAuth }) {
   const React = window.React;
   const h = React.createElement;
-  const [modo, setModo] = React.useState('login'); // 'login' | 'registro'
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [mensaje, setMensaje] = React.useState(null);
@@ -24,17 +23,10 @@ export default function Login({ usuario, navegar, onAuth }) {
     setMensaje(null);
     setEnviando(true);
     try {
-      if (modo === 'login') {
-        await auth.login(username, password);
-        setMensaje('Sesión iniciada correctamente');
-        setTipoMensaje('exito');
-        if (onAuth) onAuth();
-      } else {
-        await auth.registro(username, password);
-        setMensaje('Usuario registrado. Ya podés iniciar sesión.');
-        setTipoMensaje('exito');
-        setModo('login');
-      }
+      await auth.login(username, password);
+      setMensaje('Sesión iniciada correctamente');
+      setTipoMensaje('exito');
+      if (onAuth) await onAuth();
     } catch (e) {
       setMensaje(e.message || 'Ocurrió un error');
       setTipoMensaje('error');
@@ -48,26 +40,32 @@ export default function Login({ usuario, navegar, onAuth }) {
     h('main', null,
       h('div', { className: 'loginPanel' },
         h('div', { className: 'loginTarjeta' },
-          h('h2', null, modo === 'login' ? 'Iniciar sesión' : 'Crear cuenta'),
+          h('h2', null, 'Acceso de administración'),
           h('form', { onSubmit: manejarEnvio },
             h('div', { className: 'campo' },
-              h('label', null, 'Usuario'),
+              h('label', { htmlFor: 'usuario-admin' }, 'Usuario'),
               h('input', {
+                id: 'usuario-admin',
                 type: 'text',
                 required: true,
+                maxLength: 30,
+                autoComplete: 'username',
                 value: username,
                 onChange: (e) => setUsername(e.target.value),
-                placeholder: 'Tu nombre de usuario',
+                placeholder: 'Usuario administrador',
               })
             ),
             h('div', { className: 'campo' },
-              h('label', null, 'Contraseña'),
+              h('label', { htmlFor: 'contrasena-admin' }, 'Contraseña'),
               h('input', {
+                id: 'contrasena-admin',
                 type: 'password',
                 required: true,
+                maxLength: 128,
+                autoComplete: 'current-password',
                 value: password,
                 onChange: (e) => setPassword(e.target.value),
-                placeholder: 'Mínimo 6 caracteres',
+                placeholder: 'Contraseña de administrador',
               })
             ),
             mensaje && h('div', { className: `mensaje mensaje${tipoMensaje === 'exito' ? 'Exito' : 'Error'}` }, mensaje),
@@ -75,16 +73,7 @@ export default function Login({ usuario, navegar, onAuth }) {
               type: 'submit',
               className: 'boton boton-primario',
               disabled: enviando,
-            }, enviando ? 'Procesando...' : (modo === 'login' ? 'Iniciar sesión' : 'Crear cuenta'))
-          ),
-          h('p', { className: 'cambioRol' },
-            modo === 'login'
-              ? '¿No tenés cuenta? '
-              : '¿Ya tenés cuenta? ',
-            h('a', {
-              href: '#',
-              onClick: (e) => { e.preventDefault(); setModo(modo === 'login' ? 'registro' : 'login'); },
-            }, modo === 'login' ? 'Regístrate' : 'Iniciá sesión')
+            }, enviando ? 'Ingresando...' : 'Iniciar sesión')
           )
         )
       )

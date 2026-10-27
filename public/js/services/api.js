@@ -22,8 +22,6 @@ export async function api(path, options = {}) {
 }
 
 export const auth = {
-  registro: (username, password) =>
-    api('/api/auth/registro', { method: 'POST', body: JSON.stringify({ username, password }) }),
   login: (username, password) =>
     api('/api/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) }),
   logout: () => api('/api/auth/logout', { method: 'POST' }),
