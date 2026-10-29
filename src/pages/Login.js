@@ -1,6 +1,6 @@
 import { auth } from '../services/api.js';
 import Navbar from '../components/Navbar.jsx';
-import Footer from '../components/Footer.js';
+import Footer from '../components/Footer.jsx';
 import React from 'react';
 
 export default function Login({
@@ -86,6 +86,6 @@ export default function Login({
         )
       )
     ),
-    h(Footer, null)
+    h(Footer, { navegar })
   );
 }

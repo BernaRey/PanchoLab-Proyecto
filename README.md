@@ -1,163 +1,89 @@
-# Pancholab - El laboratorio del pancho
+# PanchoLab
 
-Aplicación full stack integrada (frontend + backend en un solo proyecto) con Node.js, Express, React, MongoDB y Mongoose.
+PanchoLab es un laboratorio cultural de panchos: un catálogo conectado a MongoDB, compras por WhatsApp, acceso privado de administración y un asistente de recomendaciones basado en Gemini.
 
-## Tecnologías
+## Estructura
 
-- **Backend**: Node.js, Express, Mongoose, express-session, dotenv
-- **Frontend**: React 18 (vía CDN, sin paso de compilación), HTML, CSS estándar
-- **Base de datos**: MongoDB con Mongoose
-- **Sin Vite, sin Webpack, sin TypeScript, sin Redux, sin Docker**
-
-## Estructura del proyecto
-
-```
-pancholab-proyecto/
-├── public/                 # Frontend (servido por Express)
-│   ├── index.html
-│   ├── css/
-│   │   ├── variables.css
-│   │   ├── global.css
-│   │   ├── animaciones.css
-│   │   ├── components.css
-│   │   └── admin.css
-│   └── js/
-│       ├── main.js         # Enrutador cliente y punto de entrada
-│       ├── components/     # Navbar, Footer, TarjetaProducto, etc.
-│       ├── pages/          # Home, ProductoDetalle, Login, PanelAdmin
-│       └── services/       # api.js (fetch a /api)
-├── src/
-│   └── server/
-│       ├── config/
-│       │   ├── env.js      # Variables de entorno
-│       │   └── database.js # Conexión Mongoose
-│       ├── models/
-│       │   ├── Product.js  # ProductSchema
-│       │   └── User.js     # Usuario (hash de contraseña, rol)
-│       ├── controllers/
-│       │   ├── productController.js
-│       │   └── authController.js
-│       ├── routes/
-│       │   ├── products.js # /api/products
-│       │   └── auth.js     # /api/auth
-│       ├── middleware/
-│       │   ├── auth.js     # autenticado + soloAdmin
-│       │   ├── validate.js # validación de entrada
-│       │   └── errorHandler.js
-│       ├── app.js          # Express + sesiones + API + estático
-│       └── server.js       # Punto de entrada
-├── scripts/
-│   └── setup-admin.js      # Crear el primer administrador
-├── .env.example
-├── .gitignore
-├── package.json
-└── README.md
+```text
+src/
+  App.jsx                 rutas y estado general de la aplicación
+  components/             navegación, catálogo, carrito y asistente
+  contextos/              estado compartido del carrito
+  pages/                  inicio, detalle, login y administración
+  services/api.js          cliente único para la API
+  estilos/                tema, layout y estilos por experiencia
+  server/
+    config/                variables de entorno y MongoDB
+    controllers/           reglas de entrada y respuestas de API
+    middleware/            autenticación, validación y errores
+    models/                modelos Mongoose
+    routes/                rutas Express por función
+public/                    recursos estáticos y fallback histórico de Express
+dist/                      build de Vite (generado; no se versiona)
 ```
 
-## Instalación y ejecución
+`src/` es la fuente actual de React. `public/js/` conserva el frontend anterior como fallback histórico; no se usa para nuevas pantallas. `npm start` compila `src/` antes de iniciar Express y sirve `dist/`.
 
-### 1. Instalar dependencias
+## Desarrollo local
 
-```bash
-npm install
-```
+1. Instala Node.js 20 o superior y MongoDB.
+2. Ejecuta `npm install`.
+3. Copia `.env.example` a `.env` y completa `MONGO_URI`, `SESSION_SECRETO` y `WHATSAPP_VENDEDOR`.
+4. Para recomendaciones, crea una clave de Google AI Studio y configura `GEMINI_API_KEY`. La clave se lee solo en el servidor.
+5. Crea el administrador inicial con `npm run admin:crear`.
+6. En terminales separadas, ejecuta `npm run dev:server` y `npm run dev`.
 
-### 2. Configurar variables de entorno
+Para servir el build desde Express usa `npm start`. `npm run start:api` inicia Express directamente y se utiliza para alojar la API por separado.
 
-Copia `.env.example` a `.env` y completa los valores:
+## Variables
 
-```bash
-cp .env.example .env
-```
+| Variable | Uso |
+| --- | --- |
+| `MONGO_URI` | Conexión a MongoDB. |
+| `SESSION_SECRETO` | Secreto aleatorio de sesión de 32 caracteres o más. |
+| `WHATSAPP_VENDEDOR` | Número internacional con código de país y solo dígitos. |
+| `GEMINI_API_KEY` | Clave privada de Gemini, solo en el host de la API. |
+| `GEMINI_MODEL` | Modelo del asistente; por defecto `gemini-2.5-flash-lite`. |
+| `CORS_ORIGINS` | Orígenes exactos permitidos en producción, separados por coma; por ejemplo `https://usuario.github.io`. En desarrollo se permite localhost automáticamente. |
+| `SESSION_COOKIE_SAME_SITE` | `lax` para mismo sitio local, `none` en despliegue separado con HTTPS. |
+| `VITE_API_URL` | URL pública de Express, sin barra final. Vacía en desarrollo con proxy Vite. |
+| `VITE_BASE_PATH` | Prefijo del sitio; `/` local y `/<repositorio>/` en GitHub Pages. |
 
-Luego edita `.env`. Al menos define:
+No pongas `GEMINI_API_KEY` ni otros secretos en variables `VITE_*`: Vite las incorpora al frontend público.
 
-- `MONGO_URI`: cadena de conexión a MongoDB (obligatoria para los datos).
-- `SESSION_SECRETO`: clave aleatoria y privada de al menos 32 caracteres para firmar las sesiones; obligatoria en producción.
-- `PUERTO`: puerto del servidor (por defecto 3000).
-- `NODE_ENV`: entorno (`desarrollo` o `produccion`).
-- `ADMIN_USERNAME` y `ADMIN_PASSWORD`: se usan solo al crear el primer administrador; la contraseña debe tener al menos 12 caracteres.
-- `WHATSAPP_VENDEDOR`: número internacional del vendedor, con código de país y solo dígitos, por ejemplo `5491123456789`.
+## API existente y agregada
 
-`.env` está excluido de Git (`.gitignore`).
+Las rutas existentes de autenticación, productos, tienda y checkout mantienen sus contratos. Se agregan:
 
-### 3. Crear el primer administrador
+| Método | Ruta | Función |
+| --- | --- | --- |
+| `POST` | `/api/contacto` | Valida el formulario y devuelve un enlace `wa.me` con el mensaje preparado. |
+| `POST` | `/api/ia/recomendar` | Recomienda recetas activas usando catálogo real y Gemini. |
 
-El rol `admin` **no puede asignarse desde el navegador**. El primer administrador se crea mediante un script controlado:
+El asistente limita los mensajes a 500 caracteres, el historial a seis intercambios y aplica un límite básico de 12 consultas por minuto por IP. Si no hay clave, cuota o conexión disponible, devuelve un error legible. El plan gratuito de Gemini tiene modelos y cuotas limitados que Google puede cambiar; la app usa el modelo configurado y no habilita facturación por sí misma.
 
-```bash
-# Completa ADMIN_USERNAME y ADMIN_PASSWORD en .env y ejecuta:
-npm run admin:crear
-```
+## GitHub Pages y API separada
 
-El comando crea la cuenta solo si MongoDB está disponible y todavía no existe un administrador. No imprime ni guarda la contraseña en texto plano. Luego podrás iniciar sesión con ese usuario y acceder al panel de administración.
+El workflow `.github/workflows/deploy-pages.yml` compila y publica `dist/` en cada push a `main`. En el repositorio, selecciona **Settings → Pages → GitHub Actions** y crea la variable `PANCHOLAB_API_URL` con la URL HTTPS de la API.
 
-### 4. Iniciar la aplicación
+En el host de Express configura:
 
-Un único comando arranca todo (frontend servido por el backend + API):
+- `NODE_ENV=production`
+- `MONGO_URI`, `SESSION_SECRETO`, `WHATSAPP_VENDEDOR` y `GEMINI_API_KEY`
+- `CORS_ORIGINS` con el origen del sitio de Pages, sin la ruta del repositorio
+- `SESSION_COOKIE_SAME_SITE=none` para permitir la cookie entre Pages y la API
 
-```bash
-npm start
-```
+La cookie es `httpOnly`, `Secure` en producción y se envía con credenciales. CORS no acepta comodines. Los navegadores que bloquean cookies de terceros pueden impedir el login si Pages y la API pertenecen a sitios distintos; para una publicación final hay que probar el navegador objetivo o usar un dominio propio compartido por frontend y API.
 
-O en modo desarrollo (con recarga automática):
+Las claves gratuitas de Gemini tienen cuotas y disponibilidad sujetas a la cuenta, modelo y condiciones vigentes. La app no configura una cuenta de facturación ni selecciona una ruta pagada automáticamente.
 
-```bash
-npm run dev
-```
+### Si la base de datos aparece desconectada
 
-La aplicación estará disponible en `http://localhost:3000` (o el puerto que definas en `PUERTO`).
+`/api/estado` muestra una explicación sin exponer la URI. Si usas MongoDB Atlas y aparece el error de IP, abre **Security → Network Access → Add IP Address** en Atlas y autoriza la IP actual de tu equipo. Verifica también que el cluster esté activo. No es necesario abrir el acceso a todas las IP. El login y el catálogo dependen de que MongoDB acepte la conexión.
 
-## Rutas de la API (prefijo `/api`)
+## Entrega
 
-| Método | Ruta | Acceso | Descripción |
-|--------|------|--------|-------------|
-| GET | `/api/estado` | Público | Estado de la API y de la base de datos |
-| POST | `/api/auth/login` | Público | Iniciar sesión (cookie `httpOnly`) |
-| POST | `/api/auth/logout` | Sesión | Cerrar sesión |
-| GET | `/api/auth/me` | Sesión | Usuario autenticado actual |
-| POST | `/api/checkout` | Público | Validar stock, confirmar pedido y devolver enlace de WhatsApp |
-| GET | `/api/products` | Público | Listar productos (`?category=...`) |
-| GET | `/api/products/:id` | Público | Detalle de un producto |
-| POST | `/api/products` | Admin | Crear producto |
-| PUT | `/api/products/:id` | Admin | Actualizar producto |
-| DELETE | `/api/products/:id` | Admin | Eliminar producto |
-
-Las operaciones de escritura de productos están protegidas en el **backend**. Ocultar botones en el frontend no es suficiente.
-
-## Roles
-
-- No hay registro público: los clientes acceden directamente al catálogo.
-- **admin**: puede crear, editar y eliminar productos desde el panel de administración. Se provisiona una única vez mediante `npm run admin:crear`.
-
-El checkout descuenta el stock mediante actualizaciones condicionales por producto. Si un producto no tiene stock suficiente, revierte los descuentos anteriores; si la reversión falla, la API devuelve una referencia y registra los productos afectados sin guardar datos personales. Usá esa referencia en los logs y corregí el stock desde el panel admin. No se reintenta automáticamente una compensación ambigua porque un `$inc` podría haberse aplicado aunque se haya perdido la respuesta. Esta estrategia es compatible con MongoDB standalone, pero no tiene la atomicidad de una transacción ni recupera automáticamente una caída abrupta del proceso.
-
-## Base de datos (MongoDB)
-
-El esquema `Product` incluye: `name`, `description`, `price`, `stock`, `category`, `image`, `country`, `ingredients`, `isActive`, `createdAt`, `updatedAt`.
-
-Si falta `MONGO_URI` o no se puede conectar a MongoDB, el servidor sigue sirviendo el frontend, pero las rutas de la API devuelven `503` con un mensaje claro indicando que la base de datos no está disponible. No aparenta funcionar cuando la base de datos no responde.
-
-## Subir a GitHub
-
-1. Crea un repositorio vacío en GitHub.
-2. Desde la carpeta del proyecto:
-
-```bash
-git init
-git add .
-git commit -m "Versión inicial: Pancholab integrado (sin Vite)"
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
-git push -u origin main
-```
-
-3. Para ejecutarlo en otro entorno, clona el repositorio, ejecuta `npm install`, configura `.env` y `npm start`.
-
-## Pruebas
-
-```bash
-npm test
-```
-
-Actualmente no hay pruebas automatizadas configuradas. El comando informa que no hay pruebas.
+- La interfaz se publica en GitHub Pages y la API necesita un host Node.js/MongoDB configurado por separado.
+- GitHub Pages no aloja Express ni MongoDB.
+- Usa commits pequeños que agrupen cambios funcionales. El proyecto requiere al menos 15 commits en el repositorio.
+- `npm run build` valida el build estático de Vite.

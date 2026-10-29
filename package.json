@@ -5,7 +5,9 @@
   "main": "src/server/server.js",
   "type": "module",
   "scripts": {
+    "prestart": "npm run build",
     "start": "node src/server/server.js",
+    "start:api": "node src/server/server.js",
     "dev": "vite",
     "dev:server": "node --watch src/server/server.js",
     "build": "vite build",

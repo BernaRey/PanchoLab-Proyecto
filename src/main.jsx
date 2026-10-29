@@ -6,6 +6,7 @@ import './estilos/tema.css';
 import './estilos/cabecera.css';
 import './estilos/catalogo.css';
 import './estilos/admin-productos.css';
+import './estilos/experiencia.css';
 
 const contenedor = document.getElementById('raiz');
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { auth, productos as apiProductos } from '../services/api.js';
 import Navbar from '../components/Navbar.jsx';
-import Footer from '../components/Footer.js';
+import Footer from '../components/Footer.jsx';
 import FormularioProductoModal from '../components/FormularioProductoModal.jsx';
 import { formatearPrecio } from '../utilidades/formatearPrecio.js';
 
@@ -192,6 +192,13 @@ export default function PanelAdmin({
               : `Estado de la tienda: ${tiendaAbierta ? 'abierta' : 'cerrada'}.`}
           </p>
 
+          <section className="resumen-admin" aria-label="Resumen del catálogo">
+            <article><span>RECETAS REGISTRADAS</span><strong>{cargando ? '—' : productos.length}</strong></article>
+            <article><span>PUBLICADAS</span><strong>{cargando ? '—' : productos.filter((producto) => producto.isActive !== false).length}</strong></article>
+            <article><span>STOCK BAJO · 3 O MENOS</span><strong>{cargando ? '—' : productos.filter((producto) => producto.isActive !== false && Number(producto.stock) > 0 && Number(producto.stock) <= 3).length}</strong></article>
+            <article className={tiendaAbierta ? 'resumen-tienda-abierta' : 'resumen-tienda-cerrada'}><span>TIENDA</span><strong>{cargandoTienda ? '…' : tiendaAbierta ? 'Abierta' : 'Cerrada'}</strong></article>
+          </section>
+
           {mensaje && (
             <div
               className={`mensaje ${esMensajeError ? 'mensajeError' : 'mensajeExito'}`}
@@ -287,7 +294,7 @@ export default function PanelAdmin({
         </section>
       </main>
 
-      <Footer />
+      <Footer navegar={navegar} />
 
       {modalAbierto && (
         <FormularioProductoModal

@@ -16,129 +16,73 @@ export default function Navbar({
 
   useEffect(() => {
     let ultimoScrollY = window.scrollY;
-
     function manejarScroll() {
       const posicionActual = window.scrollY;
       setScrollY(posicionActual);
-
-      if (posicionActual > ultimoScrollY && posicionActual > 50) {
-        setOculto(true);
-      } else if (posicionActual < ultimoScrollY) {
-        setOculto(false);
-      }
-
+      if (posicionActual > ultimoScrollY && posicionActual > 80) setOculto(true);
+      else if (posicionActual < ultimoScrollY) setOculto(false);
       ultimoScrollY = posicionActual;
     }
-
-    window.addEventListener('scroll', manejarScroll);
+    window.addEventListener('scroll', manejarScroll, { passive: true });
     return () => window.removeEventListener('scroll', manejarScroll);
   }, []);
 
-  const claseBarra = scrollY > 0 ? 'barra scrolled' : 'barra';
-  const claseFinal = oculto ? `${claseBarra} oculto` : claseBarra;
-
-  function irAlCatalogo(evento) {
+  function navegarCatalogo(evento) {
     evento.preventDefault();
     const catalogo = document.getElementById('productos');
+    if (catalogo) catalogo.scrollIntoView({ behavior: 'smooth' });
+    else navegar('/productos');
+  }
 
-    if (catalogo) {
-      catalogo.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      navegar('/productos');
-    }
+  function navegarLaboratorio(evento) {
+    evento.preventDefault();
+    const seccion = document.getElementById('laboratorio');
+    if (seccion) seccion.scrollIntoView({ behavior: 'smooth' });
+    else navegar('/');
   }
 
   return (
-      <header className={`${claseFinal} cabecera-pancholab`}>
-        <div className="contenedor">
-          <div className="barra-contenido">
-            <a
-              href="/"
-              className="logo logo-pancholab"
-              onClick={(evento) => {
-                evento.preventDefault();
-                navegar('/');
-              }}
+    <header className={`barra cabecera-pancholab ${scrollY > 0 ? 'scrolled' : ''} ${oculto ? 'oculto' : ''}`}>
+      <div className="contenedor">
+        <div className="barra-contenido">
+          <a href="/" className="logo logo-pancholab" onClick={(evento) => { evento.preventDefault(); navegar('/'); }}>
+            <span className="logoIcono" aria-hidden="true">✳</span>
+            <span className="logoMarca"><span className="logoTexto">PANCHOLAB</span><span className="logoBajada">LABORATORIO DE SABORES</span></span>
+          </a>
+
+          <nav className="navegacion" aria-label="Navegación principal">
+            <a href="/" className="activo" onClick={(evento) => { evento.preventDefault(); navegar('/'); }}>Inicio</a>
+            <a href="/productos" onClick={navegarCatalogo}>La carta</a>
+            <a href="#laboratorio" onClick={navegarLaboratorio}>El laboratorio</a>
+          </nav>
+
+          {cargandoTienda ? (
+            <span className="estado-tienda-verificando" role="status">Consultando horario…</span>
+          ) : !tiendaAbierta ? (
+            <span className="aviso-tienda-cerrada" role="status" title={errorTienda || 'Las compras están temporalmente deshabilitadas.'}>TIENDA CERRADA</span>
+          ) : null}
+
+          <div className="acciones-cabecera">
+            {usuario?.role === 'admin' && <button type="button" className="boton-admin-nav" onClick={() => navegar('/admin')}>Panel admin</button>}
+            <button
+              type="button"
+              className="boton-tema"
+              aria-label={`Cambiar a modo ${tema === 'oscuro' ? 'claro' : 'oscuro'}`}
+              aria-pressed={tema === 'claro'}
+              onClick={alCambiarTema}
             >
-              <span className="logoIcono" aria-hidden="true">🧪</span>
-              <span className="logoMarca">
-                <span className="logoTexto">PANCHOLAB</span>
-                <span className="logoBajada">LABORATORIO DE SABORES</span>
-              </span>
-            </a>
-
-            <nav className="navegacion" aria-label="Navegación principal">
-              <a
-                href="/"
-                className="activo"
-                onClick={(evento) => {
-                  evento.preventDefault();
-                  navegar('/');
-                }}
-              >
-                Inicio
-              </a>
-              <a
-                href="#productos"
-                onClick={irAlCatalogo}
-              >
-                Productos
-              </a>
-            </nav>
-
-            {cargandoTienda ? (
-              <span className="estado-tienda-verificando" role="status">
-                Verificando tienda
-              </span>
-            ) : !tiendaAbierta ? (
-              <span
-                className="aviso-tienda-cerrada"
-                role="status"
-                title={errorTienda || 'Las compras están temporalmente deshabilitadas.'}
-              >
-                TIENDA CERRADA
-              </span>
-            ) : null}
-
-            <div className="acciones-cabecera">
-              <button
-                type="button"
-                className="boton-tema"
-                aria-label={`Cambiar a modo ${tema === 'oscuro' ? 'claro' : 'oscuro'}`}
-                aria-pressed={tema === 'claro'}
-                onClick={alCambiarTema}
-              >
-                <span aria-hidden="true">{tema === 'oscuro' ? '☀' : '☾'}</span>
-                <span className="texto-boton-tema">
-                  Modo {tema === 'oscuro' ? 'luz' : 'oscuro'}
-                </span>
-              </button>
-              <button
-                type="button"
-                className="boton-carrito"
-                aria-label={`Abrir carrito, ${cantidadCarrito} productos`}
-                onClick={alAbrirCarrito}
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="9" cy="21" r="1" />
-                  <circle cx="20" cy="21" r="1" />
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                </svg>
-                <span className="contador-carrito" aria-live="polite">
-                  {cantidadCarrito}
-                </span>
-              </button>
-            </div>
+              <span aria-hidden="true">{tema === 'oscuro' ? '☼' : '◐'}</span>
+              <span className="texto-boton-tema">{tema === 'oscuro' ? 'Luz' : 'Oscuro'}</span>
+            </button>
+            <button type="button" className="boton-carrito" aria-label={`Abrir carrito, ${cantidadCarrito} productos`} onClick={alAbrirCarrito}>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+              <span className="contador-carrito" aria-live="polite">{cantidadCarrito}</span>
+            </button>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
   );
 }

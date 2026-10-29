@@ -1,4 +1,4 @@
-export const API_BASE = '';
+export const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 export async function api(path, options = {}) {
   const respuesta = await fetch(`${API_BASE}${path}`, {
@@ -57,5 +57,18 @@ export const checkout = {
     api('/api/checkout', {
       method: 'POST',
       body: JSON.stringify(pedido),
+    }),
+};
+
+export const contacto = {
+  prepararWhatsApp: (datos) =>
+    api('/api/contacto', { method: 'POST', body: JSON.stringify(datos) }),
+};
+
+export const inteligencia = {
+  consultar: (mensaje, historial = []) =>
+    api('/api/ia/recomendar', {
+      method: 'POST',
+      body: JSON.stringify({ mensaje, historial }),
     }),
 };

@@ -8,6 +8,16 @@ export default defineConfig(({ mode }) => {
     esbuild: {
       jsx: 'automatic',
     },
+    base: variables.VITE_BASE_PATH || '/',
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('/node_modules/')) return 'vendor';
+          },
+        },
+      },
+    },
     server: {
       proxy: {
         '/api': {

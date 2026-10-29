@@ -1,15 +1,24 @@
-import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { auth, tienda as apiTienda } from './services/api.js';
 import { useCarrito } from './contextos/CarritoContexto.jsx';
 import CarritoPanel from './components/CarritoPanel.jsx';
-import PanelAdmin from './pages/PanelAdmin.jsx';
 import Home from './pages/Home.jsx';
-import Login from './pages/Login.js';
-import ProductoDetalle from './pages/ProductoDetalle.js';
+const PanelAdmin = lazy(() => import('./pages/PanelAdmin.jsx'));
+const Login = lazy(() => import('./pages/Login.js'));
+const ProductoDetalle = lazy(() => import('./pages/ProductoDetalle.jsx'));
+
+const baseAplicacion = import.meta.env.BASE_URL || '/';
+const enGitHubPages = baseAplicacion !== '/';
 
 function obtenerRutaActual() {
-  const ruta = window.location.pathname;
+  let ruta = window.location.pathname;
+  if (enGitHubPages && window.location.hash.startsWith('#/')) {
+    ruta = window.location.hash.slice(1);
+  } else if (enGitHubPages && ruta.startsWith(baseAplicacion)) {
+    ruta = `/${ruta.slice(baseAplicacion.length)}`;
+  }
+  if (!ruta) ruta = '/';
+  if (ruta.length > 1) ruta = ruta.replace(/\/$/, '');
 
   if (ruta === '/' || ruta === '/productos') return 'home';
   if (ruta === '/login') return 'login';
@@ -35,7 +44,11 @@ export default function App() {
   const carrito = useCarrito();
 
   const navegar = useCallback((destino) => {
-    window.history.pushState({}, '', destino);
+    if (enGitHubPages) {
+      window.location.hash = destino;
+    } else {
+      window.history.pushState({}, '', destino);
+    }
     setRuta(obtenerRutaActual());
   }, []);
 
@@ -104,7 +117,11 @@ export default function App() {
     }
 
     window.addEventListener('popstate', actualizarRuta);
-    return () => window.removeEventListener('popstate', actualizarRuta);
+    window.addEventListener('hashchange', actualizarRuta);
+    return () => {
+      window.removeEventListener('popstate', actualizarRuta);
+      window.removeEventListener('hashchange', actualizarRuta);
+    };
   }, [cargarEstadoTienda, cargarUsuario]);
 
   useEffect(() => {
@@ -220,7 +237,9 @@ export default function App() {
 
   return (
     <>
-      {pagina}
+      <Suspense fallback={<main className="estado spinnerCarga" role="status">Abriendo el laboratorio…</main>}>
+        {pagina}
+      </Suspense>
       <CarritoPanel
         abierto={carritoAbierto}
         onCerrar={cerrarCarrito}
