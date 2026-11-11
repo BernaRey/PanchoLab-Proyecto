@@ -37,14 +37,14 @@ jobs:
           fi
       - name: Compilar frontend
         run: npm run build
-        env:
-          VITE_API_URL: ${{ vars.PANCHOLAB_API_URL }}
+      - name: Preparar fallback para rutas de la aplicación
+        run: cp frontend/dist/index.html frontend/dist/404.html
       - name: Preparar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Subir artefacto
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./frontend/dist
 
   deploy:
     environment:

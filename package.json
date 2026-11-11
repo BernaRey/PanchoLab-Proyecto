@@ -2,26 +2,28 @@
   "name": "pancholab",
   "version": "1.0.0",
   "description": "Pancholab - Laboratorio gastronómico de panchos del mundo. Aplicación full stack integrada con Node.js, Express, React, MongoDB y Mongoose.",
-  "main": "src/server/server.js",
+  "main": "backend/src/server/server.js",
   "type": "module",
   "scripts": {
     "prestart": "npm run build",
-    "start": "node src/server/server.js",
-    "start:api": "node src/server/server.js",
-    "dev": "vite",
-    "dev:server": "node --watch src/server/server.js",
-    "build": "vite build",
-    "preview": "vite preview",
-    "admin:crear": "node scripts/setup-admin.js",
+    "start": "node backend/src/server/server.js",
+    "start:api": "node backend/src/server/server.js",
+    "dev": "vite --config frontend/vite.config.js",
+    "dev:server": "node --watch backend/src/server/server.js",
+    "build": "vite build --config frontend/vite.config.js",
+    "preview": "vite preview --config frontend/vite.config.js",
+    "admin:crear": "node backend/scripts/setup-admin.js",
     "test": "node --experimental-vm-modules node_modules/.bin/jest 2>/dev/null || echo 'No hay pruebas automatizadas configuradas'"
   },
   "dependencies": {
+    "@google/genai": "^3.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
     "mongoose": "^8.0.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
     "vite": "^6.0.0"
