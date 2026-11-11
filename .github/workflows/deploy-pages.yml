@@ -16,14 +16,14 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Descargar el repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Preparar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
       - name: Instalar dependencias
         run: npm ci
@@ -40,9 +40,9 @@ jobs:
       - name: Preparar fallback para rutas de la aplicación
         run: cp frontend/dist/index.html frontend/dist/404.html
       - name: Preparar GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Subir artefacto
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./frontend/dist
 
@@ -50,9 +50,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.publicacion.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Publicar sitio
         id: publicacion
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
